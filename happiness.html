@@ -10,10 +10,17 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
       const svgWidth = 800;
-      const svgHeight = 400;
+      const svgHeight = 420;
       const margin = { top: 20, right: 20, bottom: 30, left: 40 };
       const width = svgWidth - margin.left - margin.right;
       const height = svgHeight - margin.top - margin.bottom;
+
+      // Select the SVG element
+      const svg = d3.select("#svg");
+
+      const chart = svg
+        .append("g")
+        .attr("transform", `translate(0, ${margin.top / 2})`);
 
       d3.csv("2019.csv").then((data) => {
         // Filter data to only include top 10 countries even when data is not sorted by rank
@@ -55,11 +62,8 @@
           .domain(top10Countries.map((d) => d["Country or region"]))
           .range(colors);
 
-        // Select the SVG element
-        const svg = d3.select("#svg");
-
         // bars group
-        const barGroup = svg.append("g");
+        const barGroup = chart.append("g");
 
         // Make the bars
         barGroup
@@ -74,14 +78,14 @@
 
         // Displays the x-axis
         const xAxis = d3.axisBottom(xScale);
-        svg
+        chart
           .append("g")
           .attr("transform", `translate(0, ${height})`)
           .call(xAxis);
 
         // Displays the y-axis
         const yAxis = d3.axisLeft(yScale);
-        svg
+        chart
           .append("g")
           .attr("transform", `translate(${margin.left}, 0)`)
           .call(yAxis);
