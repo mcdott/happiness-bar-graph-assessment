@@ -13,5 +13,10 @@
       style="background-color: lightgrey"
     ></svg>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      d3.csv("2019.csv").then((data) => {
+        console.log(data);
+      });
+    </script>
   </body>
 </html>
