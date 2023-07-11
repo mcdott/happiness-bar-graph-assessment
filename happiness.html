@@ -8,14 +8,14 @@
   <body>
     <svg
       id="svg"
-      width="500"
-      height="500"
+      width="800"
+      height="400"
       style="background-color: lightgrey"
     ></svg>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
-      const svgWidth = 500;
-      const svgHeight = 500;
+      const svgWidth = 800;
+      const svgHeight = 400;
       const margin = { top: 20, right: 20, bottom: 30, left: 40 };
       const width = svgWidth - margin.left - margin.right;
       const height = svgHeight - margin.top - margin.bottom;
@@ -30,7 +30,8 @@
         const xScale = d3
           .scaleBand()
           .domain(top10Countries.map((d) => d["Country or region"]))
-          .range([0, width]);
+          .range([0, width])
+          .padding(0.1);
 
         // Get the extent of the 'Score' field
         let scoreExtent = d3.extent(top10Countries, (d) => Number(d.Score));
@@ -40,18 +41,21 @@
         // Set up y-scale
         const yScale = d3.scaleLinear().domain(scoreExtent).range([height, 0]);
 
-        console.log(top10Countries);
-        console.log(xScale("Finland")); // log the x-coordinate for Finland
-        console.log(xScale("Canada")); // log the x-coordinate for Canada
-        // Find the score for Finland and Canada
-        const finlandScore = top10Countries.find(
-          (d) => d["Country or region"] === "Finland"
-        ).Score;
-        const canadaScore = top10Countries.find(
-          (d) => d["Country or region"] === "Canada"
-        ).Score;
-        console.log(yScale(finlandScore)); // log the y-coordinate (number of pixels from the top) for Finland
-        console.log(yScale(canadaScore)); // log the y-coordinate (number of pixels from the top) for Canada
+        // Select the SVG element
+        const svg = d3.select("#svg");
+
+        // bars group
+        const barGroup = svg.append("g");
+
+        // Make the bars
+        barGroup
+          .selectAll("rect")
+          .data(top10Countries)
+          .join("rect")
+          .attr("x", (d) => xScale(d["Country or region"]))
+          .attr("y", (d) => yScale(Number(d.Score)))
+          .attr("width", xScale.bandwidth())
+          .attr("height", (d) => height - yScale(Number(d.Score)));
       });
     </script>
   </body>
