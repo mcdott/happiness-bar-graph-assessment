@@ -56,6 +56,13 @@
           .attr("y", (d) => yScale(Number(d.Score)))
           .attr("width", xScale.bandwidth())
           .attr("height", (d) => height - yScale(Number(d.Score)));
+
+        // Displays the x-axis
+        const xAxis = d3.axisBottom(xScale);
+        svg
+          .append("g")
+          .attr("transform", `translate(0, ${height})`)
+          .call(xAxis);
       });
     </script>
   </body>
