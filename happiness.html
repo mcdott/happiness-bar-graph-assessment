@@ -32,9 +32,26 @@
           .domain(top10Countries.map((d) => d["Country or region"]))
           .range([0, width]);
 
+        // Get the extent of the 'Score' field
+        let scoreExtent = d3.extent(top10Countries, (d) => Number(d.Score));
+        // Round down the minimum and round up the maximum
+        scoreExtent = [Math.floor(scoreExtent[0]), Math.ceil(scoreExtent[1])];
+
+        // Set up y-scale
+        const yScale = d3.scaleLinear().domain(scoreExtent).range([height, 0]);
+
         console.log(top10Countries);
         console.log(xScale("Finland")); // log the x-coordinate for Finland
         console.log(xScale("Canada")); // log the x-coordinate for Canada
+        // Find the score for Finland and Canada
+        const finlandScore = top10Countries.find(
+          (d) => d["Country or region"] === "Finland"
+        ).Score;
+        const canadaScore = top10Countries.find(
+          (d) => d["Country or region"] === "Canada"
+        ).Score;
+        console.log(yScale(finlandScore)); // log the y-coordinate (number of pixels from the top) for Finland
+        console.log(yScale(canadaScore)); // log the y-coordinate (number of pixels from the top) for Canada
       });
     </script>
   </body>
