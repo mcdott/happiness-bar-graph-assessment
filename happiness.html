@@ -14,12 +14,27 @@
     ></svg>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
-      d3.csv("2019.csv").then(function (data) {
+      const svgWidth = 500;
+      const svgHeight = 500;
+      const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+      const width = svgWidth - margin.left - margin.right;
+      const height = svgHeight - margin.top - margin.bottom;
+
+      d3.csv("2019.csv").then((data) => {
         // Filter data to only include top 10 countries even when data is not sorted by rank
-        var top10Countries = data.filter(function (d) {
+        const top10Countries = data.filter(function (d) {
           return Number(d["Overall rank"]) <= 10;
         });
+
+        // Set up x-scale
+        const xScale = d3
+          .scaleBand()
+          .domain(top10Countries.map((d) => d["Country or region"]))
+          .range([0, width]);
+
         console.log(top10Countries);
+        console.log(xScale("Finland")); // log the x-coordinate for Finland
+        console.log(xScale("Canada")); // log the x-coordinate for Canada
       });
     </script>
   </body>
