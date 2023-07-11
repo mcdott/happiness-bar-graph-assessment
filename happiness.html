@@ -14,8 +14,12 @@
     ></svg>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
-      d3.csv("2019.csv").then((data) => {
-        console.log(data);
+      d3.csv("2019.csv").then(function (data) {
+        // Filter data to only include top 10 countries even when data is not sorted by rank
+        var top10Countries = data.filter(function (d) {
+          return Number(d["Overall rank"]) <= 10;
+        });
+        console.log(top10Countries);
       });
     </script>
   </body>
