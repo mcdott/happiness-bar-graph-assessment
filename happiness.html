@@ -30,7 +30,7 @@
         const xScale = d3
           .scaleBand()
           .domain(top10Countries.map((d) => d["Country or region"]))
-          .range([0, width])
+          .range([margin.left, svgWidth - margin.right])
           .padding(0.1);
 
         // Get the extent of the 'Score' field
@@ -63,6 +63,13 @@
           .append("g")
           .attr("transform", `translate(0, ${height})`)
           .call(xAxis);
+
+        // Displays the y-axis
+        const yAxis = d3.axisLeft(yScale);
+        svg
+          .append("g")
+          .attr("transform", `translate(${margin.left}, 0)`)
+          .call(yAxis);
       });
     </script>
   </body>
